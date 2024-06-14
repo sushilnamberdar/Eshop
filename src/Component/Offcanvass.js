@@ -4,18 +4,36 @@ import { Button, Offcanvas } from 'react-bootstrap';
 
 const Offcanvass = ({newprice, newrating , menclothing , womenclothing  ,jewelry, electronic}) => {
   const [show, setShow] = useState(false);
-
+  
   const [price, setprice] = useState("200");
-  const [rating, setrating] = useState("3")
+  const [rating, setrating] = useState("3");
+
+
+  const [prevprice , setpriveprise] = useState("");
+  const [prevrating , setprevrating] = useState("");
+
+  // checkbox value storing for whene we open it then it show the previous checked box 
+  const [menClothingChecked, setMenClothingChecked] = useState(false);
+  const [womenClothingChecked, setWomenClothingChecked] = useState(false);
+  const [jewelryChecked, setJewelryChecked] = useState(false);
+  const [electronicChecked, setElectronicChecked] = useState(false);
+
+
+
+
+
+  // function for sprice and rating 
    const sprice = (e) =>{
     const value = e.target.value;
     setprice(value);
       newprice(value);
+      setpriveprise(value);
   }
   const srating = (e) =>{
     const value = e.target.value;
     setrating(value);
     newrating(value);
+    setprevrating(value);
   }
 
   const handleClose = () => setShow(false);
@@ -43,20 +61,41 @@ const Offcanvass = ({newprice, newrating , menclothing , womenclothing  ,jewelry
       const val = e.target.checked;
       // console.log("checkbox value in offcanvss",val);
       menclothing(val)
+      if(!menClothingChecked){
+      setMenClothingChecked(true)
+      }else{
+        setMenClothingChecked(false)
+      }
   }
 
   const womenc = (e) => {
     const val = e.target.checked;
-      womenclothing(val);  
+      womenclothing(val);
+      if(!womenClothingChecked){
+        setWomenClothingChecked(true)
+      }else{
+        setWomenClothingChecked(false)
+      }
   }
 
   const jeweleryc = (e) => {
     const val = e.target.checked;
     jewelry(val)
+    if(!jewelryChecked){
+      setJewelryChecked(true)
+    }else{
+      setJewelryChecked(false);
+    }
   }
+
   const electronicc = (e) => {
     const val = e.target.checked;
       electronic(val);
+      if(!electronicChecked){
+        setElectronicChecked(true)
+      }else{
+        setElectronicChecked(false)
+      }
   }
   return (
     
@@ -73,7 +112,7 @@ const Offcanvass = ({newprice, newrating , menclothing , womenclothing  ,jewelry
           <div className='grid ml-10'>
             <label htmlFor="pricerange" className='mt-10'>Price Range</label>
             <div >
-              <input type="range" id="pricerange" min="5" max="500" defaultValue="200" onInput={sprice}/>
+              <input type="range" id="pricerange" min="5" max="500" defaultValue={prevprice} onInput={sprice}/>
             </div>
             <div>
             <span>  {price} $ </span> <span>500$</span>
@@ -81,26 +120,22 @@ const Offcanvass = ({newprice, newrating , menclothing , womenclothing  ,jewelry
             <label htmlFor="ratingrange" className='mt-4'>Rating</label>
             <div className=''>
 
-              <input type="range" id="ratingrange" min="2" max="5" defaultValue="5" onInput={srating} />
+              <input type="range" id="ratingrange" min="2" max="5" defaultValue={prevrating} onInput={srating} />
             </div>
             <span> {rating} <span> -5</span></span>
 
             <h5>Category</h5>
-            <div className='grid grid-cols-2  gap-2 -ml-20 mt-3'>
-              <input type='checkbox' onInput={manc}/>
+            <div className='grid grid-cols-2 gap-2 -ml-20 mt-3'>
+              <input type='checkbox' checked={menClothingChecked} onChange={manc} />
               <span>men's clothing</span>
-              <input type='checkbox' onInput={jeweleryc} />
-              <span>jewelery</span>
-              <input type='checkbox' onInput={electronicc} />
+              <input type='checkbox' checked={jewelryChecked} onChange={jeweleryc} />
+              <span>jewelry</span>
+              <input type='checkbox' checked={electronicChecked} onChange={electronicc} />
               <span>electronics</span>
-              <input type='checkbox' onInput={womenc} />
+              <input type='checkbox' checked={womenClothingChecked} onChange={womenc} />
               <span>women's clothing</span>
             </div>
-
           </div>
-          {/* <div className='flex  justify-center  mt-10'>
-            <Button>Done</Button>
-          </div>  */}
         </Offcanvas.Body>
       </Offcanvas>
     </div>
