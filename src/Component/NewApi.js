@@ -10,8 +10,10 @@ const NewApi = ({ sprice, srate ,categoryman  , categorywomenc , categoryjewelry
   const [currentpage, setCurrentPage] = useState(1);
 
   console.log( "catorycheckbox in api component ",categoryman)
-  // console.log("Price in Api component", sprice);
-  // console.log("Rate in Api component", srate);
+  console.log("4 variable  in Api component", categoryelectronic);
+  console.log("4 in Api component", categoryjewelry);
+  console.log("4 in Api component", categoryman);
+  console.log("4 in Api component", categorywomenc);
 
   useEffect(() => {
     axios.get("https://fakestoreapi.com/products").then((response) => {
@@ -36,6 +38,9 @@ const NewApi = ({ sprice, srate ,categoryman  , categorywomenc , categoryjewelry
     });
   };
 
+
+    
+
   const priceFilteredData = () => {
     return filteredData().filter(item => {
       if(!srate || srate===''){
@@ -46,43 +51,60 @@ const NewApi = ({ sprice, srate ,categoryman  , categorywomenc , categoryjewelry
     })
   }
 
-  const categorymanclothes = () => {
-    return priceFilteredData().filter(item  => {
-      if(!categoryman){
-        return true;
-      } else{
-        return item.category ==="men's clothing";
-      }
-    })
-  }
-  const categoryelectronicc = () => {
-    return categorymanclothes().filter(item =>{
-      if(!categoryelectronic){
-        return true;
-      }else {
-        return item.category === "electronics";
-      }
-    })
-  }
-  const womenclothingc = () => {
-    return categoryelectronicc().filter(item => {
-      if(!categorywomenc){
-        return true;
-      }else{
-        return item.category === "women's clothing";
-      }
-    })
-  }
-  const jeweleryc = () => {
-    return  womenclothingc().filter(item => {
-      if(!categoryjewelry){
-        return true;
-      } else{
-        return item.category === "jewelery";
-      }
-    })
-  }
 
+  const filterByCategory = () => {
+    return priceFilteredData().filter(item => {
+      // If no category is selected, return true for all items
+      if (!categoryman && !categorywomenc && !categoryjewelry && !categoryelectronic) {
+        return true;
+      }
+  
+      // Check if the item matches any selected category
+      return ((categoryman && item.category === "men's clothing") ||(categorywomenc && item.category === "women's clothing") ||(categoryjewelry && item.category === "jewelery") ||(categoryelectronic && item.category === "electronics")
+      );
+    });
+  };
+  
+
+  
+
+  // const categorymanclothes = () => {
+    // return priceFilteredData().filter(item  => {
+      // if(!categoryman){
+        // return true;
+      // } else{
+        // return item.category ==="men's clothing";
+      // }
+    // })
+  // }
+  // const categoryelectronicc = () => {
+    // return categorymanclothes().filter(item =>{
+      // if(!categoryelectronic){
+        // return true;
+      // }else {
+        // return item.category === "electronics";
+      // }
+    // })
+  // }
+  // const womenclothingc = () => {
+    // return categoryelectronicc().filter(item => {
+      // if(!categorywomenc){
+        // return true;
+      // }else{
+        // return item.category === "women's clothing";
+      // }
+    // })
+  // }
+  // const jeweleryc = () => {
+    // return  womenclothingc().filter(item => {
+      // if(!categoryjewelry){
+        // return true;
+      // } else{
+        // return item.category === "jewelery";
+      // }
+    // })
+  // }
+// 
     const colnumber = (e) => {
       const value = e.target.value;
       // console.log("col value ",value)
@@ -112,7 +134,7 @@ const previouspage = () =>{
    // for handling the page 
    const lastitemindex = currentpage * itemsonpage;
    const firstitemindex = lastitemindex - itemsonpage;
-   const currentitem = coll ? jeweleryc().slice(firstitemindex,lastitemindex):jeweleryc();
+   const currentitem = coll ? filterByCategory().slice(firstitemindex,lastitemindex):filterByCategory();
 
   return (
 
